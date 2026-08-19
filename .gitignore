@@ -1,0 +1,12 @@
+# 참고 자료 — 원본 상세페이지 캡처·상품 사진 (수백 MB, 로컬에만 보관)
+reference/*
+!reference/.gitkeep
+
+# 분석 중 생성되는 대지·시트 이미지 (prep_images.py / read_capture.py 로 재생성 가능)
+.claude/skills/detail-page/scripts/*.png
+
+# PDF 를 변환한 페이지 이미지
+**/local-image-*_p*.png
+
+__pycache__/
+*.pyc

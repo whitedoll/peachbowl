@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{상품명}}</title>
+<style>
+/* ══════════════════════════════════════════════════════════════
+   여기 5줄만 상품 사진 톤에 맞춰 바꾼다. 아래 CSS는 건드리지 않는다.
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --accent:#903084;   /* 강조 텍스트 — 제품명, 핵심 특징, 컬러명 */
+  --warn:#E03018;     /* 사이즈 주의, 필수 고지 */
+  --info:#0054B4;     /* 안내문 소제목 */
+  --band:#F3EFEC;     /* 섹션 배경 띠 */
+  --card:#FAF6F3;     /* 리뷰 카드 배경 */
+}
+
+/* ── 기본 ─────────────────────────────────────────────── */
+:root{ --ink:#222; --sub:#8d8d8d; --line:#e5e2de; --w:860px; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  width:var(--w); max-width:100%; margin:0 auto; background:#fff; color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","맑은 고딕",
+              "Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  -webkit-font-smoothing:antialiased; word-break:keep-all; line-height:1.85;
+}
+img{display:block;width:100%;height:auto}
+/* 이미지가 아직 없을 때도 자리가 보이도록 */
+img[src^="./img/"]{min-height:80px;background:#f0eeec}
+em{font-style:normal;color:var(--accent)}          /* 강조는 <em> 하나로 통일 */
+i{font-style:italic}
+b{font-weight:700}
+
+section{padding:74px 50px}
+section.flush{padding-left:0;padding-right:0}      /* 이미지가 폭 전체를 쓸 때 */
+.band{background:var(--band)}
+.tight{padding-top:34px}
+.center{text-align:center}
+
+/* ── 구분선 ───────────────────────────────────────────── */
+.div-dia{display:flex;align-items:center;justify-content:center;gap:10px;margin:54px 0}
+.div-dia::before,.div-dia::after{content:"";width:78px;height:1px;background:#b9b9b9}
+.div-dia span{width:9px;height:9px;border:1px solid #8f8f8f;transform:rotate(45deg)}
+.div-bar{width:1px;height:52px;background:#c4c4c4;margin:52px auto}
+
+/* ── 섹션 제목 (영문 이탤릭 + 밑줄) ──────────────────────── */
+.stitle{
+  text-align:center;font-size:14px;letter-spacing:.06em;font-style:italic;
+  font-weight:600;margin:0 0 30px;
+}
+.stitle span{border-bottom:1px solid var(--ink);padding-bottom:3px}
+
+/* ── 말풍선 (후킹 질문 / SIZE TIP) ───────────────────────── */
+.speech{
+  position:relative;border:1px solid #cfcfcf;background:#fff;
+  padding:32px 30px;margin:0 auto;max-width:430px;text-align:center;
+  font-size:15px;line-height:2;
+}
+.speech::after{                                     /* 오른쪽 아래 꼬리 */
+  content:"";position:absolute;right:-1px;bottom:-19px;
+  border:9px solid transparent;border-top-color:#cfcfcf;border-right-color:#cfcfcf;
+}
+.speech.mid::after{right:50%;transform:translateX(50%)}   /* 꼬리 가운데 */
+
+/* ── 중앙 카피 블록 ───────────────────────────────────── */
+/* 한 문장을 <br> 로 8~18자씩 끊어 세로로 쌓는다. */
+.copy{text-align:center;font-size:15px;line-height:2.1;margin:46px 0}
+.copy.sm{font-size:13.5px;color:#555}
+.copy.ital{font-style:italic;color:#4a4a4a}
+.copy + .copy{margin-top:-14px}
+
+/* ── 소구점 ──────────────────────────────────────────── */
+.point{position:relative;margin-bottom:16px}
+.point .label{                                      /* 사진 위 라벨 */
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  display:flex;align-items:center;gap:12px;
+  font-size:27px;font-weight:800;color:#fff;letter-spacing:-.01em;
+  text-shadow:0 1px 6px rgba(0,0,0,.28);white-space:nowrap;
+}
+.point .label::before{                              /* 체크박스 아이콘 */
+  content:"";width:42px;height:42px;flex:none;border-radius:9px;
+  background:#fff;border:2px solid var(--accent);
+  background-image:linear-gradient(45deg,transparent 44%,var(--accent) 44%,var(--accent) 56%,transparent 56%),
+                   linear-gradient(-45deg,transparent 62%,var(--accent) 62%,var(--accent) 72%,transparent 72%);
+}
+.point figcaption{
+  text-align:center;font-style:italic;font-size:14px;color:#3c3c3c;
+  line-height:1.9;padding:16px 0 40px;
+}
+
+/* ── 컬러 소개 ───────────────────────────────────────── */
+/* [감성 형용사구] + <em>컬러명</em> 한 줄씩 */
+.colors{text-align:center;font-size:15px;line-height:2.3}
+.colors em{font-style:italic}
+
+/* ── 리뷰 ────────────────────────────────────────────── */
+.review-band{background:var(--band);padding:46px 40px}
+.review-band h3{
+  text-align:center;color:#fff;font-size:31px;font-weight:800;letter-spacing:-.02em;
+  padding:22px 0;border-top:1px solid rgba(255,255,255,.65);
+  border-bottom:1px solid rgba(255,255,255,.65);margin-bottom:34px;
+}
+.review{display:flex;gap:18px;align-items:center}
+.review img{width:46%;flex:none}
+.review .card{background:var(--card);border-radius:10px;padding:26px 24px;font-size:15px}
+.review .stars{text-align:center;color:#c58f9a;letter-spacing:3px;margin-bottom:12px}
+.review .who{display:block;text-align:center;color:var(--sub);font-size:13px;margin-top:14px}
+.review .badge{display:block;text-align:center;color:var(--sub);font-size:11px;margin-top:4px}
+
+/* ── 아이콘 3개 ──────────────────────────────────────── */
+.icons{display:flex;justify-content:center;gap:66px;margin:56px 0 10px;text-align:center}
+.icons div{font-size:17px;color:#333}
+.icons .ring{
+  width:96px;height:96px;border:2px solid #333;border-radius:50%;
+  margin:0 auto 14px;display:flex;align-items:center;justify-content:center;
+  font-size:34px;
+}
+
+/* ── SIZE TIP ────────────────────────────────────────── */
+.tip{font-size:14.5px;line-height:2}
+.tip .t{font-style:italic;font-weight:700;color:var(--warn);
+        border-bottom:1px solid var(--warn);display:inline-block;margin-bottom:14px}
+.tip .warn{color:var(--warn);display:block;margin:16px 0}
+.tip .ask{display:block;margin-top:20px;font-weight:600}
+
+/* ── 표 ──────────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse;font-size:14px}
+caption{font-size:12.5px;color:var(--sub);text-align:left;padding-bottom:10px;line-height:1.7}
+th,td{border-bottom:1px solid var(--line);padding:12px 8px;text-align:left;
+      vertical-align:top;line-height:1.7}
+thead th{border-bottom:1.5px solid var(--ink);font-weight:700;text-align:center}
+tbody th{width:32%;font-weight:500;color:var(--sub);white-space:nowrap}
+.size-tbl td{text-align:center}
+.todo{color:var(--warn)}
+
+/* ── 하단 안내문 ─────────────────────────────────────── */
+.guide{text-align:center;font-size:13px;line-height:1.95;color:#4a4a4a}
+.guide h4{color:var(--info);font-size:14.5px;font-weight:600;margin:34px 0 6px}
+.guide h4:first-child{margin-top:0}
+.tags{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:44px}
+.tags span{background:#f2f2f2;color:#666;font-size:12px;padding:5px 11px;border-radius:3px}
+
+@media (max-width:860px){
+  body{width:100%}
+  section{padding:48px 22px}
+  .review{flex-direction:column}
+  .review img{width:100%}
+  .icons{gap:26px}
+  .point .label{font-size:19px}
+  .point .label::before{width:30px;height:30px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ 1. HERO ═══════════════════════════════════
+     가장 잘 나온 연출컷 1장. 텍스트를 올리지 않는다. -->
+<img src="./img/key.jpg" alt="{{상품명}}">
+
+<!-- ═══════════ 2. 후킹 — 질문 → 답 → 특징 → 망설임 ══════════
+     이 4박자 순서를 바꾸지 않는다. -->
+<section>
+  <div class="speech">
+    {{구매자가 겪는 불편을 질문으로}}<br>
+    {{두 번째 줄}}<br>
+    {{~하시나요? / ~없을까? 로 닫기}}
+  </div>
+
+  <p class="copy">
+    {{답변 첫 줄 — 이제 그러지 마세요! 같은 반전}}<br>
+    {{해결을 한 줄로}}<br>
+    <em>{{브랜드명}}</em>이 준비했어요.
+  </p>
+
+  <p class="copy">
+    <em>{{제품명}}</em>는<br>
+    {{특징 1}}이지만<br>
+    <em>{{특징 2}}</em>로<br>
+    {{어떤 인상을 주는지}} 합니다.
+  </p>
+
+  <div class="div-dia"><span></span></div>
+
+  <p class="copy ital">
+    {{살 때 망설이는 이유 1}}<br>
+    {{망설이는 이유 2}}<br>
+    고민했다면.....
+  </p>
+</section>
+
+<!-- ═══════════ 3. 소구점 3개 ═══════════════════════════════
+     사진으로 증명 가능한 것만. 확실한 2개가 애매한 3개보다 낫다.
+     라벨 문구(POINT 01)는 브랜드 표기로 바꿔도 된다. -->
+<section class="flush">
+  <figure class="point">
+    <img src="./img/point1.jpg" alt="{{소구점 1}}">
+    <span class="label">POINT 01</span>
+    <figcaption>{{소구점 1 캡션 첫 줄}}<br>{{둘째 줄}}</figcaption>
+  </figure>
+
+  <figure class="point">
+    <img src="./img/point2.jpg" alt="{{소구점 2}}">
+    <span class="label">POINT 02</span>
+    <figcaption>{{캡션 첫 줄}}<br>{{둘째 줄}}</figcaption>
+  </figure>
+
+  <!-- OPTIONAL: 소구점이 2개뿐이면 이 figure 를 통째로 삭제 -->
+  <figure class="point">
+    <img src="./img/point3.jpg" alt="{{소구점 3}}">
+    <span class="label">POINT 03</span>
+    <figcaption>{{캡션 첫 줄}}<br>체크하세요!</figcaption>
+  </figure>
+</section>
+
+<!-- ═══════════ 4. COLOR ═══════════════════════════════════
+     [감성 형용사구] + <em>컬러명</em>. 컬러명만 강조. -->
+<section class="band">
+  <p class="stitle"><span>COLOR</span></p>
+  <p class="colors">
+    {{형용사구}} <em>{{컬러명 1}}</em><br>
+    {{형용사구}} <em>{{컬러명 2}}</em>
+  </p>
+</section>
+
+<!-- ═══════════ 5. 리뷰 ═══════════ OPTIONAL ═══════════════
+     실제 구매자 리뷰만. 체험단·협찬이면 대가성 표기를 지운다.
+     .review-band 의 h3 는 배경 위 흰 글씨라 --band 를 진하게 잡을 것. -->
+<section class="flush">
+  <div class="review-band">
+    <h3>REAL REVIEW</h3>
+    <div class="review">
+      <img src="./img/review.jpg" alt="구매자 리뷰 사진">
+      <div class="card">
+        <p class="stars">★★★★★</p>
+        {{리뷰 원문을 그대로. 맞춤법을 고치지 않는다.}}
+        <span class="who">{{성}}00 고객님({{착용 사이즈}})</span>
+        <span class="badge">체험단 제공 리뷰</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 6. MODEL CUT / DETAIL CUT ═══════════════════
+     연출컷·클로즈업을 이어 붙인다. 캡션은 사진에 보이는 것만. -->
+<section class="tight">
+  <p class="stitle"><span>MODEL CUT</span></p>
+</section>
+<img src="./img/model1.jpg" alt="">
+<img src="./img/model2.jpg" alt="">
+
+<section class="tight">
+  <p class="stitle"><span>DETAIL CUT</span></p>
+</section>
+<img src="./img/detail1.jpg" alt="">
+<p class="copy sm">{{디테일 캡션 — 사진에 실제로 보이는 것만}}</p>
+
+<!-- ═══════════ 7. 소재 아이콘 ═══════════ OPTIONAL ═════════
+     근거 없는 기능 주장은 넣지 않는다. 소재에서 바로 나오는 특성만. -->
+<section class="tight">
+  <div class="icons">
+    <div><div class="ring">◇</div>Soft</div>
+    <div><div class="ring">◎</div>Skin-friendly</div>
+    <div><div class="ring">≋</div>Breathable</div>
+  </div>
+</section>
+
+<!-- ═══════════ 8. SIZE TIP ═══════════════════════════════
+     치수 설명은 검정, 사이즈 선택 지침만 빨강으로 분리. -->
+<section>
+  <div class="speech mid tip">
+    <span class="t">SIZE TIP ***</span><br>
+    {{치수 범위 — 가슴둘레 75~85 등}}<br>
+    {{옵션 범위}}<br>
+    {{실제 착용감 — 살짝 작게 나왔어요 등}}
+    <span class="warn">
+      {{선택 지침 제목}}<br>
+      ex) {{예시}}<br>
+      {{두 번째 지침}}<br>
+      ex) {{예시}}
+    </span>
+    <span class="ask">궁금하신 사항은 톡톡으로<br>문의주시면 상세히 상담할게요.</span>
+  </div>
+</section>
+
+<!-- ═══════════ 9. 사이즈 표 ═══════════ OPTIONAL ═══════════
+     실측값이 없으면 섹션째로 삭제. 지어내지 않는다. -->
+<section class="tight">
+  <p class="stitle"><span>SIZE</span></p>
+  <table class="size-tbl">
+    <caption>단위: cm / 측정 방법에 따라 1~2cm 오차가 있을 수 있습니다.</caption>
+    <thead><tr><th>{{구분}}</th><th>{{항목 1}}</th><th>{{항목 2}}</th></tr></thead>
+    <tbody>
+      <tr><td>{{값}}</td><td>{{값}}</td><td>{{값}}</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ 10. 상품 정보 ═══════════ 필수 ═══════════════
+     compliance.md 의 품목별 필수 항목을 전부 나열.
+     모르는 값은 지어내지 말고 .todo 로 남긴다. -->
+<section class="band">
+  <p class="stitle"><span>INFORMATION</span></p>
+  <table>
+    <tbody>
+      <tr><th>{{항목}}</th><td>{{내용}}</td></tr>
+      <tr><th>{{항목}}</th><td class="todo">※ 판매자 확인 필요</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ 11. 안내문 ═══════════ 필수 ═══════════════════
+     상품이 바뀌어도 그대로 재사용하는 고정 블록. -->
+<section>
+  <div class="guide">
+    <h4>Fabric</h4>
+    {{00.0% polyester &amp; 00.0% spandex}}
+
+    <h4>품절 제품 안내</h4>
+    품절 제품은 네이버 톡톡으로 문의 주세요.<br>
+    빠른 시일내에 입고시켜 드려요.
+
+    <h4>주문 안내</h4>
+    같은 제품이라도 재는 방식에 따라 사이즈 차이가 있을 수 있습니다.<br>
+    모니터 환경이나 조명에 따라 컬러 차이가 있을 수 있습니다.<br>
+    박음질 라인이나 실밥, 끈길이 다름, 올빠짐 등은 불량이 아닙니다.<br>
+    상품 수령 직후 세탁 전에 바로 불량 여부를 확인해 주세요.
+
+    <h4>교환 반품</h4>
+    교환 반품 기간(상품 수령일로부터 7일)이 경과하거나<br>
+    오염, 훼손되거나 착용 흔적이 있는 상품은<br>
+    교환 반품이 불가합니다.
+
+    <h4>세탁 주의</h4>
+    가능한 손빨래로 부드럽게, 제품 단독으로 세탁해 주세요.<br>
+    표백제를 사용하지 마시고, 건조기 사용 시<br>
+    제품이 손상될 수 있으니 주의해 주세요.
+
+    <div class="tags">
+      <span>#{{태그}}</span><span>#{{태그}}</span><span>#{{태그}}</span>
+      <span>#{{태그}}</span><span>#{{태그}}</span><span>#{{태그}}</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
